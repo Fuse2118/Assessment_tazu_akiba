@@ -1,12 +1,10 @@
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, avoid_print
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slider/carousel.dart';
-
 import '../../controller/get.dart';
-import 'Main_Assessment.dart';
 
 class ScreenServer extends StatefulWidget {
   const ScreenServer({super.key});
@@ -18,13 +16,31 @@ class ScreenServer extends StatefulWidget {
 class _ScreenServerState extends State<ScreenServer> {
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 2), (timer) {
+    Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() {
         GetAssessmentBill(context);
+        if (timer.tick >= 3) {
+          timer.cancel();
+        } else {
+          StartTimer();
+        }
       });
     });
 
     super.initState();
+  }
+
+  void StartTimer() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        print('  เข้า55555');
+        Future.delayed(const Duration(seconds: 8), () {
+          setState(() {
+            initState();
+          });
+        });
+      });
+    });
   }
 
   @override
@@ -40,8 +56,8 @@ class _ScreenServerState extends State<ScreenServer> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               indicatorBarColor: Colors.transparent,
-              autoScrollDuration: Duration(seconds: 2),
-              animationPageDuration: Duration(milliseconds: 500),
+              autoScrollDuration: const Duration(seconds: 2),
+              animationPageDuration: const Duration(milliseconds: 500),
               unActivatedIndicatorColor: Colors.transparent,
               activateIndicatorColor: Colors.transparent,
               animationPageCurve: Curves.linear,

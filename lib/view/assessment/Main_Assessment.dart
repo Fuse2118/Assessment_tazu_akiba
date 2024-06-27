@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, override_on_non_overriding_member, unused_local_variable
+// ignore_for_file: avoid_print, non_constant_identifier_names, override_on_non_overriding_member, unused_local_variable, unnecessary_string_interpolations, unnecessary_brace_in_string_interps
 
 import 'dart:async';
 import 'package:dio/dio.dart';
@@ -18,15 +18,16 @@ class MainAssessment extends StatefulWidget {
 }
 
 class _MainAssessmentState extends State<MainAssessment> {
-  var EvaluationScore;
-
   @override
-  // void initState() {
-  //   Timer.periodic(Duration(seconds: 2), (timer) {
-  //     GetAssessmentBillReload(context);
-  //   });
-  //   super.initState();
-  // }
+  void initState() {
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      GetSurveyReload(context);
+      if (timer.tick >= 5) {
+        timer.cancel();
+      }
+    });
+    super.initState();
+  }
 
   Future<void> GetAssessmentBillReload(BuildContext context) async {
     String gettoken = await SharedPreferencesValue().getValueString("token");
@@ -48,10 +49,12 @@ class _MainAssessmentState extends State<MainAssessment> {
     } else {
       setState(() {
         SurveyList = "";
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const ScreenServer()),
-          (Route<dynamic> route) => false,
-        );
+        Timer.periodic(Duration(seconds: 3), (timer) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const ScreenServer()),
+            (Route<dynamic> route) => false,
+          );
+        });
       });
     }
     print(result);
@@ -69,6 +72,12 @@ class _MainAssessmentState extends State<MainAssessment> {
         ),
       ),
     );
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        GetSurveyReload(context);
+        Navigator.of(context).pop(); // Close the dialog
+      });
+    });
   }
 
   @override
@@ -136,7 +145,11 @@ class _MainAssessmentState extends State<MainAssessment> {
                                 blurRadius: 10,
                                 offset: const Offset(5, 5),
                               ),
-                              onPressed: () => AlertAssessMent_Bad(context),
+                              onPressed: () {
+                                setState(() {
+                                  AlertAssessMent_Bad(context);
+                                });
+                              },
                               child: Image.asset('images/Bad.png'),
                             ),
                           ),
@@ -155,7 +168,20 @@ class _MainAssessmentState extends State<MainAssessment> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  EvaluationScore = 25;
+                                  var EvaluationScore = 25;
+                                  var SurveyListBillNo =
+                                      SurveyList[0]['bill_no'];
+                                  var Company_Id = SurveyList[0]['user_id'];
+                                  var surveyListStatus = 1;
+                                  var Contact_Back = 0;
+                                  AssessmentEvaluationScore(
+                                    context,
+                                    SurveyListBillNo,
+                                    surveyListStatus,
+                                    Company_Id,
+                                    EvaluationScore,
+                                    Contact_Back,
+                                  );
                                   print(EvaluationScore);
                                 });
                               },
@@ -177,7 +203,20 @@ class _MainAssessmentState extends State<MainAssessment> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  EvaluationScore = 75;
+                                  var EvaluationScore = 75;
+                                  var SurveyListBillNo =
+                                      SurveyList[0]['bill_no'];
+                                  var Company_Id = SurveyList[0]['user_id'];
+                                  var surveyListStatus = 1;
+                                  var Contact_Back = 0;
+                                  AssessmentEvaluationScore(
+                                    context,
+                                    SurveyListBillNo,
+                                    surveyListStatus,
+                                    Company_Id,
+                                    EvaluationScore,
+                                    Contact_Back,
+                                  );
                                   print(EvaluationScore);
                                 });
                               },
@@ -199,8 +238,20 @@ class _MainAssessmentState extends State<MainAssessment> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  EvaluationScore = 100;
-                                  print(EvaluationScore);
+                                  var EvaluationScore = 100;
+                                  var SurveyListBillNo =
+                                      SurveyList[0]['bill_no'];
+                                  var Company_Id = SurveyList[0]['user_id'];
+                                  var surveyListStatus = 1;
+                                  var Contact_Back = 0;
+                                  AssessmentEvaluationScore(
+                                    context,
+                                    SurveyListBillNo,
+                                    surveyListStatus,
+                                    Company_Id,
+                                    EvaluationScore,
+                                    Contact_Back,
+                                  );
                                 });
                               },
                               child: Image.asset('images/VeryGood.png'),
@@ -265,7 +316,9 @@ class _MainAssessmentState extends State<MainAssessment> {
     );
   }
 
-  void AlertAssessMent_Bad(BuildContext context) {
+  void AlertAssessMent_Bad(
+    BuildContext context,
+  ) {
     showDialog(
       barrierColor: Color.fromARGB(203, 0, 0, 0),
       barrierDismissible: false,
@@ -326,9 +379,21 @@ class _MainAssessmentState extends State<MainAssessment> {
                   ),
                   onPressed: () {
                     setState(() {
-                      EvaluationScore = 0;
-                      print(EvaluationScore);
+                      var SurveyListBillNo = SurveyList[0]['bill_no'];
+                      var Company_Id = SurveyList[0]['user_id'];
+                      var EvaluationScore = 0;
+                      var surveyListStatus = 1;
+                      var Contact_Back = 1;
+                      AssessmentEvaluationScore(
+                        context,
+                        SurveyListBillNo,
+                        surveyListStatus,
+                        Company_Id,
+                        EvaluationScore,
+                        Contact_Back,
+                      );
                     });
+                    Navigator.pop(context);
                     print('อนุญาต');
                   },
                   child: const Text(
@@ -348,10 +413,22 @@ class _MainAssessmentState extends State<MainAssessment> {
                         side: const BorderSide()),
                   ),
                   onPressed: () {
-                    EvaluationScore = 0;
-                    Navigator.pop(context);
-                    print('ไม่อนุญาต');
-                    print(EvaluationScore);
+                    setState(() {
+                      var SurveyListBillNo = SurveyList[0]['bill_no'];
+                      var Company_Id = SurveyList[0]['user_id'];
+                      var EvaluationScore = 0;
+                      var surveyListStatus = 1;
+                      var Contact_Back = 0;
+                      AssessmentEvaluationScore(
+                        context,
+                        SurveyListBillNo,
+                        surveyListStatus,
+                        Company_Id,
+                        EvaluationScore,
+                        Contact_Back,
+                      );
+                      Navigator.pop(context);
+                    });
                   },
                   child: const Text(
                     'ไม่อนุญาต',
@@ -367,5 +444,82 @@ class _MainAssessmentState extends State<MainAssessment> {
         ),
       ),
     );
+  }
+
+  Future<void> AssessmentEvaluationScore(
+    BuildContext context,
+    SurveyListBillNo,
+    int surveyListStatus,
+    company_id,
+    int evaluationScore,
+    int contact_back,
+  ) async {
+    String gettoken = await SharedPreferencesValue().getValueString("token");
+    String url = '${Api_UpdateSurveyStatus}';
+    Dio dio = Dio();
+    print(SurveyListBillNo);
+    print(company_id);
+    print(surveyListStatus);
+    print(evaluationScore);
+    print(contact_back);
+    try {
+      Response response = await dio.put(
+        options: Options(headers: {'Authorization': 'Bearer $gettoken'}),
+        url,
+        data: {
+          "bill_no": SurveyListBillNo.toString(),
+          "score": evaluationScore,
+          "contact_back": contact_back.toString(),
+          "user_id": company_id,
+          "status": surveyListStatus.toString()
+        },
+      );
+
+      var result = response.data["results"];
+      print(result);
+      var status_code = response.data["status_code"][0]['code'];
+      if (status_code == "200") {
+        setState(() {
+          GetSurveyReload(context);
+          AlertAssessMentDone(context);
+          initState();
+          setState(() {
+            Future.delayed(const Duration(seconds: 1), () {
+              setState(() {
+                GetSurveyReload(context);
+              });
+            });
+          });
+        });
+      } else {}
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> GetSurveyReload(BuildContext context) async {
+    String gettoken = await SharedPreferencesValue().getValueString("token");
+    final dio = Dio();
+    String url = Api_GetSurveyPaymentZero;
+    Response response = await dio.get(
+      url,
+      options: Options(
+        headers: {'Authorization': 'Bearer $gettoken'},
+      ),
+    );
+    var status_code = response.data['status_code'][0]['code'];
+    var result = response.data['results'];
+    print('result: $status_code');
+    if (result != null) {
+      setState(() {
+        SurveyList = result;
+      });
+    } else {
+      setState(() {
+        SurveyList = null;
+        GetAssessmentBillReload(context);
+      });
+    }
+    print(result);
   }
 }

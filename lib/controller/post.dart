@@ -53,11 +53,13 @@ void RememberPreferences(value) {
     (prefs) {
       prefs.setBool("remember_me", value);
       prefs.setString('token', token);
+      prefs.setString('Company_Id', Company_Id);
     },
   );
   void setState(value) {
     _isChecked_Login = value;
     token;
+    Company_Id;
   }
 }
 

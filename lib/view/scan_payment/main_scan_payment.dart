@@ -24,16 +24,34 @@ class MainScanPayment extends StatefulWidget {
 var ID_PAYMENT;
 
 class _MainScanPaymentState extends State<MainScanPayment> {
-  // void initState() {
-  //   Timer.periodic(Duration(seconds: 2), (timer) {
-  //     setState(() {
-  //       GetSurveyPaymentReload(context);
-  //     });
-  //   });
+  void initState() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        GetSurveyPaymentReload(context);
+        if (timer.tick >= 3) {
+          timer.cancel();
+        } else {
+          StartTimerA();
+        }
+      });
+    });
 
-  //   super.initState();
-  // }
+    super.initState();
+  }
 
+  void StartTimerA() {
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        Future.delayed(const Duration(seconds: 8), () {
+          setState(() {
+            initState();
+          });
+        });
+      });
+    });
+  }
+
+  var bill_no = '';
   TextEditingController nameController = TextEditingController();
   String BilNumber = '';
   @override
@@ -142,7 +160,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                                   onPressed: () {
                                     setState(() {
                                       var datetime = DateTime.now();
-                                      var bill_no = BilNumber;
+                                      bill_no = BilNumber;
                                       var Status_Assessment = 0;
                                       print(
                                           '${datetime.year}-${datetime.month}-${datetime.day}');
@@ -193,11 +211,12 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                                   setState(() {
                                     nameController.clear();
                                     BilNumber = "";
+                                    bill_no = '';
                                   });
                                   print('ยกเลิก');
                                 },
                                 child: const Text(
-                                  'ยกเลิก',
+                                  'เคลียร์',
                                   style: TextStyle(
                                     fontSize: 45,
                                     color: Colors.white,
@@ -281,8 +300,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            // '${SurveyList[0]['bill_no']}',
-                            '$BilNumber',
+                            '${SurveyList[0]['bill_no']}',
                             style: TextStyle(
                               fontSize: 65,
                               color: Colors.black,
@@ -316,7 +334,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                             ),
                             onPressed: () {
                               setState(() {
-                                Delete_SurveyPaymentALL(context);
+                                AlertAssessMentDeleteALL(context);
                               });
                               print('ลบทั้งหมด');
                             },
@@ -344,7 +362,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         physics: AlwaysScrollableScrollPhysics(),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: DataTable(
                                 headingTextStyle: const TextStyle(
@@ -418,16 +436,16 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                                             child: IconButton(
                                               onPressed: () {
                                                 setState(() {
-                                                  // var SurveyListBillNo =
-                                                  //     SurveyList[i]['bill_no'];
-                                                  // var SurveyListStatus = 9;
-                                                  // Delete_SurveyPayment(
-                                                  //     context,
-                                                  //     SurveyListBillNo,
-                                                  //     SurveyListStatus);
-                                                  // print(
-                                                  //     'ยกเลิก${SurveyList[i]['id']}');
-                                                  AlertAssessMentDele(context);
+                                                  var SurveyListBillNo =
+                                                      SurveyList[i]['bill_no'];
+                                                  var SurveyListStatus = 9;
+                                                  print(
+                                                      'ยกเลิก${SurveyList[i]['id']}');
+                                                  AlertAssessMentDele(
+                                                    context,
+                                                    SurveyListBillNo,
+                                                    SurveyListStatus,
+                                                  );
                                                 });
                                               },
                                               icon: const Icon(
@@ -482,38 +500,261 @@ class _MainScanPaymentState extends State<MainScanPayment> {
     );
   }
 
-  void AlertAssessMentDele(BuildContext context) {
+  void AlertAssessMentDele(
+      BuildContext context, surveyListBillNo, int surveyListStatus) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Container(
-          width: 250,
-          height: 250,
+          width: 340,
+          height: 320,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                child: CircularProgressIndicator(
-                  strokeWidth: 5,
-                  color: ColorsRedManin,
-                ),
+              Icon(
+                Icons.error_outline_rounded,
+                color: Colors.red,
+                size: 80,
               ),
               Text(
-                'กรุณารอสักครู่....',
+                'ต้องการลบเลขที่ใบเสร็จนี้',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              Text(
+                '$surveyListBillNo',
+                style: TextStyle(
+                  fontSize: 45,
+                  color: ColorsRedManin,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'ใช่หรือไม่',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        fixedSize: Size(155, 50)),
+                    onPressed: () {
+                      setState(() {
+                        Delete_SurveyPayment(
+                          context,
+                          surveyListBillNo,
+                          surveyListStatus,
+                        );
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                        Text(
+                          ' ยืนยัน',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        fixedSize: Size(155, 50)),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Icon(
+                          Icons.cancel_outlined,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                        Text(
+                          ' ยกเลิก',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void AlertAssessMentDeleteALL(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title: Container(
+          width: 340,
+          height: 250,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                color: Colors.red,
+                size: 80,
+              ),
+              Text(
+                'ต้องการลบเลขที่ใบเสร็จทั้งหมด ใช่หรือไม่',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        fixedSize: Size(155, 50)),
+                    onPressed: () {
+                      setState(() {
+                        Delete_SurveyPaymentALL(context);
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                        Text(
+                          ' ยืนยัน',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        fixedSize: Size(155, 50)),
+                    onPressed: () {
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: const [
+                        Icon(
+                          Icons.cancel_outlined,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                        Text(
+                          ' ยกเลิก',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  AlertDeleteAssessMentDone(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          title: Container(
+            width: 340,
+            height: 320,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 5,
+                    color: ColorsRedManin,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'กรุณารอสักครู่....',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          )),
+    );
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.of(context).pop(); // Close the dialog
+      Navigator.of(context).pop(); // Close the dialog
+    });
   }
 
   Future<void> Delete_SurveyPayment(
@@ -544,6 +785,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
       if (status_code == "200") {
         setState(() {
           GetSurveyPaymentReload(context);
+          AlertDeleteAssessMentDone(context);
           setState(() {
             Future.delayed(const Duration(seconds: 1), () {
               setState(() {
@@ -577,6 +819,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
       if (status_code == "200") {
         setState(() {
           GetSurveyPaymentReload(context);
+          AlertDeleteAssessMentDone(context);
           setState(() {
             Future.delayed(const Duration(seconds: 1), () {
               setState(() {
@@ -616,22 +859,156 @@ class _MainScanPaymentState extends State<MainScanPayment> {
       );
 
       var result = response.data["results"];
-
       var status_code = response.data["status_code"][0]['code'];
       print(result);
       print(status_code);
+
       if (status_code == "200") {
+        AlertCreateSurveyDone(context);
         print('Done');
-        nameController.clear();
-        BilNumber = "";
-        // Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(builder: (context) => const MainScanPayment()),
-        //     (Route<dynamic> route) => false);
+        setState(() {
+          nameController.clear();
+          BilNumber = "";
+          GetSurveyPaymentReloadMain(context);
+        });
       } else {}
     } catch (e) {
-      // AlertUserPassworNullFall(context);
+      setState(() {
+        AlertCreateSurveyDuprication(context);
+      });
       print(e);
       print('ไม่เข้า');
     }
+  }
+
+  Future<void> GetSurveyPaymentReloadMain(BuildContext context) async {
+    String gettoken = await SharedPreferencesValue().getValueString("token");
+    final dio = Dio();
+    String url = Api_GetSurveyPaymentZero;
+    Response response = await dio.get(
+      url,
+      options: Options(
+        headers: {'Authorization': 'Bearer $gettoken'},
+      ),
+    );
+    var status_code = response.data['status_code'][0]['code'];
+    var result = response.data['results'];
+    print('result: $status_code');
+    if (status_code == '200') {
+      setState(() {
+        SurveyList = result;
+        initState();
+      });
+    } else {
+      SurveyList = "";
+    }
+    print(result);
+  }
+
+  AlertCreateSurveyDone(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title: Container(
+          width: 340,
+          height: 320,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                  color: ColorsRedManin,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                'กรุณารอสักครู่....',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    Future.delayed(Duration(seconds: 2), () {
+      Navigator.of(context).pop(); // Close the dialog
+    });
+  }
+
+  AlertCreateSurveyDuprication(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        title: Container(
+          width: 300,
+          height: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                child: Icon(
+                  Icons.error_outline,
+                  size: 120,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                'พบข้อพิดพลาด',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'เลขที่ใบเสร็จซ้ำ',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    fixedSize: Size(MediaQuery.of(context).size.width, 70)),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+                child: Text(
+                  'ยืนยัน',
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
