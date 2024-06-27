@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, avoid_print, prefer_const_constructors, non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_string_interpolations, unnecessary_null_comparison
+// ignore_for_file: avoid_unnecessary_containers, avoid_print, prefer_const_constructors, non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_string_interpolations, unnecessary_null_comparison, prefer_typing_uninitialized_variables
 
 import 'dart:async';
 
@@ -11,7 +11,6 @@ import 'package:pushable_button/pushable_button.dart';
 import '../../controller/post.dart';
 import '../../server/api.dart';
 import '../../server/shared_preferences.dart';
-import '../assessment/screen_server.dart';
 import 'login_scan_payment.dart';
 
 class MainScanPayment extends StatefulWidget {
@@ -24,6 +23,7 @@ class MainScanPayment extends StatefulWidget {
 var ID_PAYMENT;
 
 class _MainScanPaymentState extends State<MainScanPayment> {
+  @override
   void initState() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -293,7 +293,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * 0.40,
                       height: MediaQuery.of(context).size.height * 0.12,
                       child: Row(

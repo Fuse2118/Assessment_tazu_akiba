@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print, prefer_typing_uninitialized_variables
+// ignore_for_file: non_constant_identifier_names, avoid_print, prefer_typing_uninitialized_variables, use_build_context_synchronously, unused_local_variable
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
