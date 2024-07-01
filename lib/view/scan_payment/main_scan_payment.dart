@@ -51,6 +51,27 @@ class _MainScanPaymentState extends State<MainScanPayment> {
     });
   }
 
+  Future<void> GetSurveyPaymentReload(BuildContext context) async {
+    String gettoken = await SharedPreferencesValue().getValueString("token");
+    final dio = Dio();
+    String url = Api_GetSurveyPaymentZero;
+    Response response = await dio.get(
+      url,
+      options: Options(
+        headers: {'Authorization': 'Bearer $gettoken'},
+      ),
+    );
+    var status_code = response.data['status_code'][0]['code'];
+    var result = response.data['results'];
+    print('result: $status_code');
+    if (status_code == '200') {
+      SurveyList = result;
+    } else {
+      SurveyList = "";
+    }
+    print(result);
+  }
+
   var bill_no = '';
   TextEditingController nameController = TextEditingController();
   String BilNumber = '';

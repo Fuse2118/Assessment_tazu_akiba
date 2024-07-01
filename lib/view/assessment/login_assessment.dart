@@ -1,11 +1,14 @@
 // ignore_for_file: must_call_super, non_constant_identifier_names, prefer_typing_uninitialized_variables, sized_box_for_whitespace, prefer_const_constructors, annotate_overrides
 
 import 'package:animate_do/animate_do.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_btn/loading_btn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../controller/post.dart';
+import '../../server/api.dart';
 import 'screen_server.dart';
 
 class LoginAssessment extends StatefulWidget {
@@ -300,5 +303,61 @@ class _LoginAssessmentState extends State<LoginAssessment> {
         ),
       ),
     );
+  }
+
+  String tokenAssessment = "";
+  bool _isChecked_Assessment_Login = true;
+  Future<void> PostLoginAssessment(
+    BuildContext context,
+    textUsername,
+    textPassword,
+  ) async {
+    String url = Api_Login;
+    Dio dio = Dio();
+    print(url);
+    try {
+      Response response = await dio.post(
+        url,
+        data: {
+          "username": textUsername.toString(),
+          "password": textPassword.toString(),
+        },
+      );
+
+      var result = response.data["results"];
+      print(result);
+      var status_code = response.data["status_code"][0]['code'];
+      Company_Id = result['id'];
+      print(status_code);
+      if (status_code == "200") {
+        setState(() {
+          tokenAssessment = result['token'];
+          RememberPreferencesAssessment(_isChecked_Assessment_Login);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => ScreenServer()),
+              (Route<dynamic> route) => false);
+        });
+      } else {}
+    } catch (e) {
+      // AlertUserPassworNullFall(context);
+      print(e);
+      print('ไม่เข้า');
+    }
+  }
+
+  void RememberPreferencesAssessment(value) {
+    print("_isChecked_Assessment_Login $_isChecked_Assessment_Login");
+    _isChecked_Assessment_Login = value;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('tokenAssessment', tokenAssessment);
+        prefs.setString('Company_Id', Company_Id);
+      },
+    );
+    void setState(value) {
+      _isChecked_Assessment_Login = value;
+      tokenAssessment;
+    }
   }
 }

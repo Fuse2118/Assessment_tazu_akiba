@@ -3,8 +3,10 @@
 import 'package:assessment_tazu_akiba/controller/get.dart';
 import 'package:assessment_tazu_akiba/unity/colors_style.dart';
 import 'package:assessment_tazu_akiba/view/assessment/login_assessment.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../server/api.dart';
 import '../../server/shared_preferences.dart';
 import 'screen_server.dart';
 
@@ -19,10 +21,10 @@ class _CheckTokenAssessmentState extends State<CheckTokenAssessment> {
   @override
   void initState() {
     Future.delayed(Duration(seconds: 2), () async {
-      String gettoken =
+      String tokenAssessment =
           await SharedPreferencesValue().getValueString("tokenAssessment");
-      print(gettoken);
-      if (gettoken != "" && gettoken != null) {
+      print(tokenAssessment);
+      if (tokenAssessment != "" && tokenAssessment != null) {
         setState(() {
           GetSurveyPaymentReload(context);
           Navigator.of(context).pushAndRemoveUntil(
@@ -41,6 +43,28 @@ class _CheckTokenAssessmentState extends State<CheckTokenAssessment> {
     });
 
     super.initState();
+  }
+
+  Future<void> GetSurveyPaymentReload(BuildContext context) async {
+    String tokenAssessment =
+        await SharedPreferencesValue().getValueString("tokenAssessment");
+    final dio = Dio();
+    String url = Api_GetSurveyPaymentZero;
+    Response response = await dio.get(
+      url,
+      options: Options(
+        headers: {'Authorization': 'Bearer $tokenAssessment'},
+      ),
+    );
+    var status_code = response.data['status_code'][0]['code'];
+    var result = response.data['results'];
+    print('result: $status_code');
+    if (status_code == '200') {
+      SurveyList = result;
+    } else {
+      SurveyList = "";
+    }
+    print(result);
   }
 
   @override
