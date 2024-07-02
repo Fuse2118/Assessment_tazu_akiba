@@ -23,26 +23,10 @@ class _ScreenServerState extends State<ScreenServer> {
     Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() {
         GetAssessmentBill(context);
-        if (timer.tick >= 3) {
-          timer.cancel();
-        } else {
-          StartTimer();
-        }
       });
     });
 
     super.initState();
-  }
-
-  void StartTimer() {
-    Future.delayed(const Duration(seconds: 6), () {
-      setState(() {
-        print('  เข้า55555');
-        Future.delayed(const Duration(seconds: 8), () {
-          initState();
-        });
-      });
-    });
   }
 
   Future<void> GetAssessmentBill(BuildContext context) async {
@@ -78,51 +62,53 @@ class _ScreenServerState extends State<ScreenServer> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Carousel(
+      body: Expanded(
+        child: Column(
+          children: [
+            Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              indicatorBarColor: Colors.transparent,
-              autoScrollDuration: const Duration(seconds: 2),
-              animationPageDuration: const Duration(milliseconds: 500),
-              unActivatedIndicatorColor: Colors.transparent,
-              activateIndicatorColor: Colors.transparent,
-              animationPageCurve: Curves.linear,
-              stopAtEnd: false,
-              autoScroll: true,
-              items: [
-                Expanded(
-                  child: Image.asset(
-                    'images/silde1.png',
-                    fit: BoxFit.fill,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+              child: Carousel(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                indicatorBarColor: Colors.transparent,
+                autoScrollDuration: const Duration(seconds: 2),
+                animationPageDuration: const Duration(milliseconds: 500),
+                unActivatedIndicatorColor: Colors.transparent,
+                activateIndicatorColor: Colors.transparent,
+                animationPageCurve: Curves.linear,
+                stopAtEnd: false,
+                autoScroll: true,
+                items: [
+                  Expanded(
+                    child: Image.asset(
+                      'images/silde1.png',
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Image.asset(
-                    'images/silde2.png',
-                    fit: BoxFit.fill,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                  Expanded(
+                    child: Image.asset(
+                      'images/silde2.png',
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Image.asset(
-                    'images/silde3.png',
-                    fit: BoxFit.fill,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                  Expanded(
+                    child: Image.asset(
+                      'images/silde3.png',
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

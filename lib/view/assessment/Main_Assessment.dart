@@ -22,9 +22,6 @@ class _MainAssessmentState extends State<MainAssessment> {
   void initState() {
     Timer.periodic(Duration(seconds: 2), (timer) {
       GetAssessmentBillReload(context);
-      if (timer.tick >= 5) {
-        timer.cancel();
-      }
     });
     super.initState();
   }
@@ -469,11 +466,7 @@ class _MainAssessmentState extends State<MainAssessment> {
         await SharedPreferencesValue().getValueString("tokenAssessment");
     String url = '${Api_UpdateSurveyStatus}';
     Dio dio = Dio();
-    print(SurveyListBillNo);
-    print(company_id);
-    print(surveyListStatus);
-    print(evaluationScore);
-    print(contact_back);
+
     try {
       Response response = await dio.put(
         options: Options(headers: {'Authorization': 'Bearer $tokenAssessment'}),
@@ -545,7 +538,6 @@ class _MainAssessmentState extends State<MainAssessment> {
     Future.delayed(Duration(seconds: 2), () {
       AlertAssessMentDone(context);
       Future.delayed(Duration(seconds: 2), () {
-        Navigator.of(context).pop(); // Close the dialog
         Navigator.of(context).pop(); // Close the dialog
       });
     });

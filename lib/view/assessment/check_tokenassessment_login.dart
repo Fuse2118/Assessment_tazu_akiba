@@ -5,6 +5,7 @@ import 'package:assessment_tazu_akiba/unity/colors_style.dart';
 import 'package:assessment_tazu_akiba/view/assessment/login_assessment.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../server/api.dart';
 import '../../server/shared_preferences.dart';
@@ -20,10 +21,11 @@ class CheckTokenAssessment extends StatefulWidget {
 class _CheckTokenAssessmentState extends State<CheckTokenAssessment> {
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
     Future.delayed(Duration(seconds: 2), () async {
       String tokenAssessment =
           await SharedPreferencesValue().getValueString("tokenAssessment");
-      print(tokenAssessment);
       if (tokenAssessment != "" && tokenAssessment != null) {
         setState(() {
           GetSurveyPaymentReload(context);

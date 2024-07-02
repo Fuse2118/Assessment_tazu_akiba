@@ -3,6 +3,7 @@
 import 'package:assessment_tazu_akiba/controller/get.dart';
 import 'package:assessment_tazu_akiba/unity/colors_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../server/shared_preferences.dart';
 import 'login_scan_payment.dart';
@@ -17,6 +18,8 @@ class CheckTokenScanPayment extends StatefulWidget {
 class _CheckTokenScanPaymentState extends State<CheckTokenScanPayment> {
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
     Future.delayed(Duration(seconds: 2), () async {
       String gettoken = await SharedPreferencesValue().getValueString("token");
       print(gettoken);

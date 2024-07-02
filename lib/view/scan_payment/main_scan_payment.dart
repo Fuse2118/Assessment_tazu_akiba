@@ -23,32 +23,18 @@ class MainScanPayment extends StatefulWidget {
 var ID_PAYMENT;
 
 class _MainScanPaymentState extends State<MainScanPayment> {
+  var focusNode = FocusNode();
+
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(seconds: 3), (timer) {
       setState(() {
+        focusNode;
         GetSurveyPaymentReload(context);
-        if (timer.tick >= 3) {
-          timer.cancel();
-        } else {
-          StartTimerA();
-        }
       });
     });
 
     super.initState();
-  }
-
-  void StartTimerA() {
-    Future.delayed(const Duration(seconds: 5), () {
-      setState(() {
-        Future.delayed(const Duration(seconds: 8), () {
-          setState(() {
-            initState();
-          });
-        });
-      });
-    });
   }
 
   Future<void> GetSurveyPaymentReload(BuildContext context) async {
@@ -78,445 +64,464 @@ class _MainScanPaymentState extends State<MainScanPayment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              color: ColorsRedManin,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(200),
+      body: SingleChildScrollView(
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                color: ColorsRedManin,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(200),
+                          ),
+                          child: const Image(
+                            width: 250,
+                            image: AssetImage('images/Logo2.png'),
+                          ),
                         ),
-                        child: const Image(
-                          width: 250,
-                          image: AssetImage('images/Logo2.png'),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        child: Row(
-                          children: const [
-                            Text(
-                              'เลขที่ใบเสร็จ',
-                              style: TextStyle(
-                                fontSize: 45,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              width: MediaQuery.of(context).size.width * 0.41,
-                              padding: EdgeInsets.all(20),
-                              child: TextField(
-                                style: TextStyle(fontSize: 55),
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                cursorColor: ColorsRedManin,
-                                maxLength: 10,
-                                controller: nameController,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                decoration: InputDecoration(
-                                  counterText: "",
-                                  border: InputBorder.none,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.40,
+                          child: Row(
+                            children: const [
+                              Text(
+                                'เลขที่ใบเสร็จ',
+                                style: TextStyle(
+                                  fontSize: 45,
+                                  color: Colors.white,
                                 ),
-                                onChanged: (text) {
-                                  setState(() {
-                                    BilNumber = text;
-                                  });
-                                },
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (BilNumber != null &&
-                                BilNumber != '' &&
-                                nameController.text.length == 10) ...{
+                        Container(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.41,
+                                padding: EdgeInsets.all(20),
+                                child: TextField(
+                                  autofocus: true,
+                                  focusNode: focusNode,
+                                  style: TextStyle(fontSize: 55),
+                                  keyboardType: TextInputType.number,
+                                  textAlign: TextAlign.center,
+                                  cursorColor: ColorsRedManin,
+                                  maxLength: 10,
+                                  controller: nameController,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  decoration: InputDecoration(
+                                    counterText: "",
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (text) {
+                                    setState(() {
+                                      BilNumber = text;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.40,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              if (BilNumber != null &&
+                                  BilNumber != '' &&
+                                  nameController.text.length == 10) ...{
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.15,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.10,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      shape: ContinuousRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        focusNode.requestFocus();
+                                        var datetime = DateTime.now();
+                                        bill_no = BilNumber;
+                                        var Status_Assessment = 0;
+                                        print(
+                                            '${datetime.year}-${datetime.month}-${datetime.day}');
+                                        print(ID_PAYMENT);
+                                        PostCreateSurvey(context, datetime,
+                                            bill_no, Status_Assessment);
+                                      });
+                                    },
+                                    child: const Text(
+                                      'ยืนยัน',
+                                      style: TextStyle(
+                                          fontSize: 45, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              } else ...{
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.15,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.10,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.grey,
+                                      shape: ContinuousRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    onPressed: null,
+                                    child: const Text(
+                                      'ยืนยัน',
+                                      style: TextStyle(
+                                          fontSize: 45, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              },
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.15,
                                 height:
                                     MediaQuery.of(context).size.height * 0.10,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
+                                    backgroundColor: Colors.red,
                                     shape: ContinuousRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      var datetime = DateTime.now();
-                                      bill_no = BilNumber;
-                                      var Status_Assessment = 0;
-                                      print(
-                                          '${datetime.year}-${datetime.month}-${datetime.day}');
-                                      print(ID_PAYMENT);
-                                      PostCreateSurvey(context, datetime,
-                                          bill_no, Status_Assessment);
+                                      focusNode.requestFocus();
+                                      BilNumber = "";
+                                      bill_no = '';
                                     });
+                                    print('ยกเลิก');
                                   },
                                   child: const Text(
-                                    'ยืนยัน',
+                                    'เคลียร์',
                                     style: TextStyle(
-                                        fontSize: 45, color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                            } else ...{
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.15,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.10,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey,
-                                    shape: ContinuousRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                                      fontSize: 45,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                  onPressed: null,
-                                  child: const Text(
-                                    'ยืนยัน',
-                                    style: TextStyle(
-                                        fontSize: 45, color: Colors.white),
-                                  ),
                                 ),
                               ),
-                            },
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              height: MediaQuery.of(context).size.height * 0.10,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  shape: ContinuousRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 55,
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: PushableButton(
+                        height: 60,
+                        elevation: 10,
+                        hslColor: HSLColor.fromColor(ColorsRedManin),
+                        shadow: BoxShadow(
+                          color: const Color.fromARGB(255, 255, 255, 255)
+                              .withOpacity(0.4),
+                          spreadRadius: 5,
+                          blurRadius: 10,
+                          offset: const Offset(0, 0),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            SharedPreferencesValue().delValue("token");
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const LoginScanPayment()),
+                              (Route<dynamic> route) => false,
+                            );
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: const [
+                              Text(
+                                'ออกจากระบบ  ',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    nameController.clear();
-                                    BilNumber = "";
-                                    bill_no = '';
-                                  });
-                                  print('ยกเลิก');
-                                },
-                                child: const Text(
-                                  'เคลียร์',
+                              ),
+                              Icon(
+                                Icons.logout,
+                                size: 45,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (SurveyList != null && SurveyList != '') ...{
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'เลขที่ใบเสร็จ',
+                        style: TextStyle(
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${SurveyList[0]['bill_no']}',
+                              style: TextStyle(
+                                fontSize: 65,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'ประเมินความพึงพอใจ',
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  AlertAssessMentDeleteALL(context);
+                                });
+                                print('ลบทั้งหมด');
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'ลบทั้งหมด',
                                   style: TextStyle(
-                                    fontSize: 45,
+                                    fontSize: 25,
                                     color: Colors.white,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    child: PushableButton(
-                      height: 60,
-                      elevation: 10,
-                      hslColor: HSLColor.fromColor(ColorsRedManin),
-                      shadow: BoxShadow(
-                        color: const Color.fromARGB(255, 255, 255, 255)
-                            .withOpacity(0.4),
-                        spreadRadius: 5,
-                        blurRadius: 10,
-                        offset: const Offset(0, 0),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          SharedPreferencesValue().delValue("token");
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScanPayment()),
-                            (Route<dynamic> route) => false,
-                          );
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: const [
-                            Text(
-                              'ออกจากระบบ  ',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Icon(
-                              Icons.logout,
-                              size: 45,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (SurveyList != null && SurveyList != '') ...{
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    const Text(
-                      'เลขที่ใบเสร็จ',
-                      style: TextStyle(
-                        fontSize: 60,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.40,
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${SurveyList[0]['bill_no']}',
-                            style: TextStyle(
-                              fontSize: 65,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Divider(
-                      color: Colors.black,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'ประเมินความพึงพอใจ',
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
-                        Container(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: ContinuousRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                AlertAssessMentDeleteALL(context);
-                              });
-                              print('ลบทั้งหมด');
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'ลบทั้งหมด',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 400,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        physics: AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: DataTable(
-                                headingTextStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                dataTextStyle: const TextStyle(
-                                  fontSize: 18,
-                                ),
-                                border: TableBorder.all(),
-                                columns: const <DataColumn>[
-                                  DataColumn(
-                                    label: Text(
-                                      '     ลำดับ',
-                                      textAlign: TextAlign.center,
-                                    ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 400,
+                        child: SingleChildScrollView(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.manual,
+                          scrollDirection: Axis.vertical,
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: DataTable(
+                                  headingTextStyle: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  DataColumn(
-                                    label: Text(
-                                      '    เลขที่ใบเสร็จ',
-                                      textAlign: TextAlign.center,
-                                    ),
+                                  dataTextStyle: const TextStyle(
+                                    fontSize: 18,
                                   ),
-                                  DataColumn(
-                                    label: Text(
-                                      '       สถานะ',
-                                      textAlign: TextAlign.center,
+                                  border: TableBorder.all(),
+                                  columns: const <DataColumn>[
+                                    DataColumn(
+                                      label: Text(
+                                        '     ลำดับ',
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                  ),
-                                  DataColumn(
-                                    label: Text(
-                                      '      ยกเลิก',
-                                      textAlign: TextAlign.center,
+                                    DataColumn(
+                                      label: Text(
+                                        '    เลขที่ใบเสร็จ',
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                                rows: <DataRow>[
-                                  for (int i = 0;
-                                      i < SurveyList.length;
-                                      i++) ...{
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(
-                                          Center(
-                                            child: Text('${i + 1}    '),
-                                          ),
-                                        ),
-                                        DataCell(
-                                          Center(
-                                            child: Text(
-                                              '${SurveyList[i]['bill_no']}',
+                                    DataColumn(
+                                      label: Text(
+                                        '       สถานะ',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: Text(
+                                        '      ยกเลิก',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                  rows: <DataRow>[
+                                    for (int i = 0;
+                                        i < SurveyList.length;
+                                        i++) ...{
+                                      DataRow(
+                                        cells: <DataCell>[
+                                          DataCell(
+                                            Center(
+                                              child: Text('${i + 1}    '),
                                             ),
                                           ),
-                                        ),
-                                        if (SurveyList[i]['status'] == '0') ...{
                                           DataCell(
                                             Center(
                                               child: Text(
-                                                'รอประเมิน ',
-                                                style: TextStyle(
-                                                  color: Colors.blue.shade900,
-                                                  fontWeight: FontWeight.bold,
+                                                '${SurveyList[i]['bill_no']}',
+                                              ),
+                                            ),
+                                          ),
+                                          if (SurveyList[i]['status'] ==
+                                              '0') ...{
+                                            DataCell(
+                                              Center(
+                                                child: Text(
+                                                  'รอประเมิน ',
+                                                  style: TextStyle(
+                                                    color: Colors.blue.shade900,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          } else
+                                            ...{},
+                                          DataCell(
+                                            Center(
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    var SurveyListBillNo =
+                                                        SurveyList[i]
+                                                            ['bill_no'];
+                                                    var SurveyListStatus = 9;
+                                                    print(
+                                                        'ยกเลิก${SurveyList[i]['id']}');
+                                                    AlertAssessMentDele(
+                                                      context,
+                                                      SurveyListBillNo,
+                                                      SurveyListStatus,
+                                                    );
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                  Icons.cancel,
+                                                  color: Colors.red,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        } else
-                                          ...{},
-                                        DataCell(
-                                          Center(
-                                            child: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  var SurveyListBillNo =
-                                                      SurveyList[i]['bill_no'];
-                                                  var SurveyListStatus = 9;
-                                                  print(
-                                                      'ยกเลิก${SurveyList[i]['id']}');
-                                                  AlertAssessMentDele(
-                                                    context,
-                                                    SurveyListBillNo,
-                                                    SurveyListStatus,
-                                                  );
-                                                });
-                                              },
-                                              icon: const Icon(
-                                                Icons.cancel,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  }
-                                ],
+                                        ],
+                                      ),
+                                    }
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          } else ...{
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.assignment_late_outlined,
-                      color: ColorsRedManin,
-                      size: 200,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'ไม่พบข้อมูลเลขที่ใบเสร็จ',
-                      style: TextStyle(
-                        fontSize: 45,
+            } else ...{
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.assignment_late_outlined,
+                        color: ColorsRedManin,
+                        size: 200,
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        'ไม่พบข้อมูลเลขที่ใบเสร็จ',
+                        style: TextStyle(
+                          fontSize: 45,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          }
-        ],
+            }
+          ],
+        ),
       ),
     );
   }
@@ -529,7 +534,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
       builder: (ctx) => AlertDialog(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         title: Container(
-          width: 340,
+          width: 350,
           height: 320,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -571,7 +576,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        fixedSize: Size(155, 50)),
+                        fixedSize: Size(160, 50)),
                     onPressed: () {
                       setState(() {
                         Delete_SurveyPayment(
@@ -579,6 +584,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                           surveyListBillNo,
                           surveyListStatus,
                         );
+                        nameController.clear();
                       });
                     },
                     child: Row(
@@ -606,7 +612,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        fixedSize: Size(155, 50)),
+                        fixedSize: Size(160, 50)),
                     onPressed: () {
                       setState(() {
                         Navigator.pop(context);
@@ -674,10 +680,11 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        fixedSize: Size(155, 50)),
+                        fixedSize: Size(160, 50)),
                     onPressed: () {
                       setState(() {
                         Delete_SurveyPaymentALL(context);
+                        nameController.clear();
                       });
                     },
                     child: Row(
@@ -705,7 +712,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                         shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        fixedSize: Size(155, 50)),
+                        fixedSize: Size(160, 50)),
                     onPressed: () {
                       setState(() {
                         Navigator.pop(context);
@@ -773,8 +780,12 @@ class _MainScanPaymentState extends State<MainScanPayment> {
           )),
     );
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.of(context).pop(); // Close the dialog
-      Navigator.of(context).pop(); // Close the dialog
+      setState(() {
+        nameController.clear();
+        focusNode.requestFocus();
+        Navigator.of(context).pop(); // Close the dialog
+        Navigator.of(context).pop(); // Close the dialog
+      });
     });
   }
 
