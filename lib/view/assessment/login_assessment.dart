@@ -339,14 +339,12 @@ class _LoginAssessmentState extends State<LoginAssessment> {
         });
       } else {}
     } catch (e) {
-      // AlertUserPassworNullFall(context);
       print(e);
       print('ไม่เข้า');
     }
   }
 
   void RememberPreferencesAssessment(value) {
-    print("_isChecked_Assessment_Login $_isChecked_Assessment_Login");
     _isChecked_Assessment_Login = value;
     SharedPreferences.getInstance().then(
       (prefs) {

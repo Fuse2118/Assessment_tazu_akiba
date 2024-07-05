@@ -75,20 +75,53 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      height: 50,
+                      height: 20,
                     ),
                     Column(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(200),
-                          ),
-                          child: const Image(
-                            width: 250,
-                            image: AssetImage('images/Logo2.png'),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(200),
+                              ),
+                              child: const Image(
+                                width: 200,
+                                image: AssetImage('images/Logo2.png'),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: ContinuousRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Scan QRCODE  ',
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ),
+                                    Icon(
+                                      Icons.qr_code_scanner_outlined,
+                                      size: 50,
+                                      color: Colors.blue.shade900,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 20,
@@ -247,7 +280,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                       ],
                     ),
                     SizedBox(
-                      height: 55,
+                      height: MediaQuery.of(context).size.height * 0.22,
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.25,
@@ -811,8 +844,6 @@ class _MainScanPaymentState extends State<MainScanPayment> {
         },
       );
 
-      var result = response.data["results"];
-      print(result);
       var status_code = response.data["status_code"][0]['code'];
       if (status_code == "200") {
         setState(() {
@@ -844,9 +875,6 @@ class _MainScanPaymentState extends State<MainScanPayment> {
         options: Options(headers: {'Authorization': 'Bearer $gettoken'}),
         url,
       );
-
-      var result = response.data["results"];
-      print(result);
       var status_code = response.data["status_code"][0]['code'];
       if (status_code == "200") {
         setState(() {
@@ -875,7 +903,6 @@ class _MainScanPaymentState extends State<MainScanPayment> {
     String url = Api_PostCreateSurvey;
     Dio dio = Dio();
     String gettoken = await SharedPreferencesValue().getValueString("token");
-    print(url);
     try {
       Response response = await dio.post(
         options: Options(headers: {'Authorization': 'Bearer $gettoken'}),
@@ -890,10 +917,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
         },
       );
 
-      var result = response.data["results"];
       var status_code = response.data["status_code"][0]['code'];
-      print(result);
-      print(status_code);
 
       if (status_code == "200") {
         AlertCreateSurveyDone(context);
@@ -925,7 +949,6 @@ class _MainScanPaymentState extends State<MainScanPayment> {
     );
     var status_code = response.data['status_code'][0]['code'];
     var result = response.data['results'];
-    print('result: $status_code');
     if (status_code == '200') {
       setState(() {
         SurveyList = result;
@@ -934,7 +957,6 @@ class _MainScanPaymentState extends State<MainScanPayment> {
     } else {
       SurveyList = "";
     }
-    print(result);
   }
 
   AlertCreateSurveyDone(BuildContext context) {

@@ -42,7 +42,6 @@ class _ScreenServerState extends State<ScreenServer> {
     );
     var status_code = response.data['status_code'][0]['code'];
     var result = response.data['results'];
-    print('result: $result');
     if (result != null) {
       setState(() {
         SurveyList = result;

@@ -60,13 +60,11 @@ class _CheckTokenAssessmentState extends State<CheckTokenAssessment> {
     );
     var status_code = response.data['status_code'][0]['code'];
     var result = response.data['results'];
-    print('result: $status_code');
     if (status_code == '200') {
       SurveyList = result;
     } else {
       SurveyList = "";
     }
-    print(result);
   }
 
   @override

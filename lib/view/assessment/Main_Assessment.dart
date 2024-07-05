@@ -20,7 +20,7 @@ class MainAssessment extends StatefulWidget {
 class _MainAssessmentState extends State<MainAssessment> {
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 2), (timer) {
+    Timer.periodic(const Duration(seconds: 2), (timer) {
       GetAssessmentBillReload(context);
     });
     super.initState();
@@ -47,7 +47,7 @@ class _MainAssessmentState extends State<MainAssessment> {
     } else {
       setState(() {
         SurveyList = "";
-        Timer.periodic(Duration(seconds: 3), (timer) {
+        Timer.periodic(const Duration(seconds: 10), (timer) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const ScreenServer()),
             (Route<dynamic> route) => false,
@@ -63,14 +63,76 @@ class _MainAssessmentState extends State<MainAssessment> {
       barrierColor: const Color(0xffED1E24),
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color.fromARGB(255, 255, 17, 0),
-        title: Image.asset(
-          'images/thank.jpg',
-          scale: 1.2,
+        backgroundColor: const Color(0xffED1E24),
+        title: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Image.asset(
+                  'images/thank.jpg',
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xffED1E24),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: ColorsRedManin, width: 3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Column(
+                          children: [
+                            Text(
+                              'ข้อเสนอแนะ',
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'เพิ่มเติม',
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        'images/QrTazu.png',
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 10), () {
       setState(() {
         GetAssessmentBillReload(context);
         Navigator.of(context).pop(); // Close the dialog
@@ -132,9 +194,9 @@ class _MainAssessmentState extends State<MainAssessment> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
-                              width: 200,
+                              width: 250,
                               child: PushableButton(
-                                height: 200,
+                                height: 250,
                                 elevation: 10,
                                 hslColor: HSLColor.fromColor(
                                     const Color.fromARGB(255, 48, 48, 48)),
@@ -153,9 +215,9 @@ class _MainAssessmentState extends State<MainAssessment> {
                               ),
                             ),
                             SizedBox(
-                              width: 200,
+                              width: 250,
                               child: PushableButton(
-                                height: 200,
+                                height: 250,
                                 elevation: 10,
                                 hslColor: HSLColor.fromColor(
                                     const Color.fromARGB(255, 48, 48, 48)),
@@ -181,16 +243,15 @@ class _MainAssessmentState extends State<MainAssessment> {
                                       EvaluationScore,
                                       Contact_Back,
                                     );
-                                    print(EvaluationScore);
                                   });
                                 },
                                 child: Image.asset('images/Medium.png'),
                               ),
                             ),
                             SizedBox(
-                              width: 200,
+                              width: 250,
                               child: PushableButton(
-                                height: 200,
+                                height: 250,
                                 elevation: 10,
                                 hslColor: HSLColor.fromColor(
                                     const Color.fromARGB(255, 48, 48, 48)),
@@ -216,16 +277,15 @@ class _MainAssessmentState extends State<MainAssessment> {
                                       EvaluationScore,
                                       Contact_Back,
                                     );
-                                    print(EvaluationScore);
                                   });
                                 },
                                 child: Image.asset('images/Good.png'),
                               ),
                             ),
                             SizedBox(
-                              width: 200,
+                              width: 250,
                               child: PushableButton(
-                                height: 200,
+                                height: 250,
                                 elevation: 10,
                                 hslColor: HSLColor.fromColor(
                                     const Color.fromARGB(255, 48, 48, 48)),
@@ -251,7 +311,6 @@ class _MainAssessmentState extends State<MainAssessment> {
                                       EvaluationScore,
                                       Contact_Back,
                                     );
-                                    // AlertAssessmentBillDone(context);
                                   });
                                 },
                                 child: Image.asset('images/VeryGood.png'),
@@ -263,55 +322,6 @@ class _MainAssessmentState extends State<MainAssessment> {
                     ),
                   )
                 ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    color: const Color.fromARGB(31, 171, 171, 171)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: ColorsRedManin, width: 3),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Column(
-                          children: [
-                            Text(
-                              'ข้อเสนอแนะ',
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'เพิ่มเติม',
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        'images/QrTazu.png',
-                        scale: 1.4,
-                      ),
-                    )
-                  ],
-                ),
               ),
             ),
           } else ...{
@@ -328,7 +338,7 @@ class _MainAssessmentState extends State<MainAssessment> {
     BuildContext context,
   ) {
     showDialog(
-      barrierColor: Color.fromARGB(203, 0, 0, 0),
+      barrierColor: const Color.fromARGB(203, 0, 0, 0),
       barrierDismissible: false,
       context: context,
       builder: (ctx) => AlertDialog(
@@ -402,7 +412,6 @@ class _MainAssessmentState extends State<MainAssessment> {
                       );
                     });
                     Navigator.pop(context);
-                    print('อนุญาต');
                   },
                   child: const Text(
                     '  อนุญาต  ',
@@ -506,7 +515,7 @@ class _MainAssessmentState extends State<MainAssessment> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           title: Container(
             width: 340,
             height: 320,
@@ -521,10 +530,10 @@ class _MainAssessmentState extends State<MainAssessment> {
                     color: ColorsRedManin,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                Text(
+                const Text(
                   'กรุณารอสักครู่....',
                   style: TextStyle(
                     fontSize: 30,
@@ -535,9 +544,9 @@ class _MainAssessmentState extends State<MainAssessment> {
             ),
           )),
     );
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       AlertAssessMentDone(context);
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 10), () {
         Navigator.of(context).pop(); // Close the dialog
       });
     });
