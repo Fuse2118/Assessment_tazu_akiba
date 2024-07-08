@@ -29,9 +29,10 @@ class _LoginScanPaymentState extends State<LoginScanPayment> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
         child: Container(
           width: double.infinity,
-          height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
               gradient: LinearGradient(begin: Alignment.topCenter, colors: [
             Color.fromARGB(255, 136, 11, 11),

@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pushable_button/pushable_button.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import '../../controller/post.dart';
 import '../../server/api.dart';
 import '../../server/shared_preferences.dart';
@@ -27,12 +28,12 @@ class _MainScanPaymentState extends State<MainScanPayment> {
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      setState(() {
-        focusNode;
-        GetSurveyPaymentReload(context);
-      });
-    });
+    // Timer.periodic(Duration(seconds: 3), (timer) {
+    //   setState(() {
+    //     focusNode;
+    //     GetSurveyPaymentReload(context);
+    //   });
+    // });
 
     super.initState();
   }
@@ -61,6 +62,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
   var bill_no = '';
   TextEditingController nameController = TextEditingController();
   String BilNumber = '';
+  String result = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +102,20 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                var res = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          SimpleBarcodeScannerPage(),
+                                    ));
+                                setState(() {
+                                  if (res is String) {
+                                    nameController.text = res;
+                                    print(nameController.text);
+                                  }
+                                });
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
