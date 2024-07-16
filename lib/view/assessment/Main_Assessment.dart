@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:keep_screen_on/keep_screen_on.dart';
 import 'package:pushable_button/pushable_button.dart';
 import '../../controller/get.dart';
 import '../../server/api.dart';
@@ -23,6 +24,7 @@ class _MainAssessmentState extends State<MainAssessment> {
     Timer.periodic(const Duration(seconds: 2), (timer) {
       GetAssessmentBillReload(context);
     });
+    KeepScreenOn.turnOn();
     super.initState();
   }
 

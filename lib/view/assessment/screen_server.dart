@@ -7,6 +7,7 @@ import 'package:assessment_tazu_akiba/view/assessment/Main_Assessment.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slider/carousel.dart';
+import 'package:keep_screen_on/keep_screen_on.dart';
 import '../../controller/get.dart';
 import '../../server/shared_preferences.dart';
 
@@ -25,7 +26,7 @@ class _ScreenServerState extends State<ScreenServer> {
         GetAssessmentBill(context);
       });
     });
-
+    KeepScreenOn.turnOn();
     super.initState();
   }
 

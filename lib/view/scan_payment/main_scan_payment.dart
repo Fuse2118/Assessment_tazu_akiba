@@ -25,15 +25,14 @@ var ID_PAYMENT;
 
 class _MainScanPaymentState extends State<MainScanPayment> {
   var focusNode = FocusNode();
-
   @override
   void initState() {
-    // Timer.periodic(Duration(seconds: 3), (timer) {
-    //   setState(() {
-    //     focusNode;
-    //     GetSurveyPaymentReload(context);
-    //   });
-    // });
+    Timer.periodic(Duration(seconds: 3), (timer) {
+      setState(() {
+        focusNode;
+        GetSurveyPaymentReload(context);
+      });
+    });
 
     super.initState();
   }
@@ -175,7 +174,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                                   keyboardType: TextInputType.number,
                                   textAlign: TextAlign.center,
                                   cursorColor: ColorsRedManin,
-                                  maxLength: 10,
+                                  maxLength: 9,
                                   controller: nameController,
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter.allow(
@@ -206,7 +205,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                             children: [
                               if (BilNumber != null &&
                                   BilNumber != '' &&
-                                  nameController.text.length == 10) ...{
+                                  nameController.text.length == 9) ...{
                                 SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.15,
@@ -277,6 +276,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                                       focusNode.requestFocus();
                                       BilNumber = "";
                                       bill_no = '';
+                                      nameController.clear();
                                     });
                                     print('ยกเลิก');
                                   },
