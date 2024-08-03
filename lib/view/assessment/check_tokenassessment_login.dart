@@ -75,14 +75,14 @@ class _CheckTokenAssessmentState extends State<CheckTokenAssessment> {
         children: [
           Center(
             child: Container(
-              width: 250,
-              height: 250,
+              width: 300,
+              height: 300,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  scale: 5,
                   image: AssetImage(
                     'images/Logo2.png',
                   ),
+                  scale: 1.2,
                 ),
               ),
               child: CircularProgressIndicator(

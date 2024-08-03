@@ -87,7 +87,7 @@ class _MainScanPaymentState extends State<MainScanPayment> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border.all(),
-                                borderRadius: BorderRadius.circular(200),
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Image(
                                 width: 200,

@@ -80,30 +80,16 @@ class _ScreenServerState extends State<ScreenServer> {
                 stopAtEnd: false,
                 autoScroll: true,
                 items: [
-                  Expanded(
-                    child: Image.asset(
-                      'images/silde1.png',
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
+                  for (int i = 1; i <= 14; i++) ...{
+                    Expanded(
+                      child: Image.asset(
+                        'images/$i.png',
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Image.asset(
-                      'images/silde2.png',
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                    ),
-                  ),
-                  Expanded(
-                    child: Image.asset(
-                      'images/silde3.png',
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                    ),
-                  ),
+                  }
                 ],
               ),
             )

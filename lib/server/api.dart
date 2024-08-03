@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-String Api_Survey = 'http://192.168.1.104:2222/'; //DEMO Server
+String Api_Survey = 'http://192.168.1.159:2222/'; //DEMO Server
 
 String Api_Login = '${Api_Survey}auth/'; // Login
 String Api_GetSurveyPayment =

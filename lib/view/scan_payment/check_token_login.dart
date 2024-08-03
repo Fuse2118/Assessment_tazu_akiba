@@ -50,7 +50,7 @@ class _CheckTokenScanPaymentState extends State<CheckTokenScanPayment> {
               height: 250,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  scale: 5,
+                  scale: 1.5,
                   image: AssetImage(
                     'images/Logo2.png',
                   ),
